@@ -1,10 +1,15 @@
-﻿namespace DigitalChat{
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace DigitalChat{
 
 	public interface IChatClient {
-		void Login (string userName);
-		void SendMessage (Message message);
-		void ReceiveMessage (Message message);
-		void Disconnect ();
+		//Login to the server
+		IEnumerator Login (string userName);
+		//Send message to user
+		IEnumerator SendMessage (string fromName, string toName, string message);
+		//Trigger method for getting all online user list
+		IEnumerator GetOnlineUserList ();
 	}
 
 }

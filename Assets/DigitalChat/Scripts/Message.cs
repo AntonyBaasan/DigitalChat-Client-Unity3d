@@ -16,14 +16,14 @@ namespace DigitalChat{
 	public class Message {
 		private string fromUser;
 		private string toUser;
-		private string data;
+		private string content;
 		private MSG_TYPE type;
 		private DateTime time;
 
-		public Message(string fromUser,string toUser,string data, MSG_TYPE type,DateTime time){
+		public Message(string fromUser,string toUser,string content, MSG_TYPE type,DateTime time){
 			this.fromUser = fromUser;
 			this.toUser = toUser;
-			this.data = data;
+			this.content = content;
 			this.type = type;
 			this.time = time;
 		}
@@ -33,8 +33,12 @@ namespace DigitalChat{
 		/// parse JSON to Object
 		/// </summary>
 		/// <param name="jsonStr">Json string.</param>
-		public Message(string jsonStr){
-
+		public Message(JSONObject jsonObject){
+			this.fromUser = jsonObject["fromUser"].ToString();
+			this.toUser = jsonObject["toUser"].ToString();
+			this.content = jsonObject["content"].ToString();
+			//this.type = jsonObject["type"].ToString();
+			this.time = DateTime.Parse(jsonObject["time"].ToString());
 		}
 
 		public string ToJson(){
