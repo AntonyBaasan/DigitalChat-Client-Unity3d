@@ -1,10 +1,9 @@
 ﻿namespace DigitalChat{
 
 	public interface IChatClient {
-		void Connect (string userName);
-		void ChangeName (string newName);
-		void SendMessage (string message);
-		void ReceiveMessage (string message);
+		void Login (string userName);
+		void SendMessage (Message message);
+		void ReceiveMessage (Message message);
 		void Disconnect ();
 	}
 

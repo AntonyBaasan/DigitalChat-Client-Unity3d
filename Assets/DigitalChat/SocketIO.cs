@@ -9,7 +9,7 @@ namespace DigitalChat{
 			return isConnected;
 		}
 
-		public void Connect (string userName)
+		public void Login (string userName)
 		{
 			isConnected = true;
 		}
@@ -29,6 +29,7 @@ namespace DigitalChat{
 			CheckConnection ();
 
 		}
+
 		public void Disconnect(){
 			isConnected = false;
 		}
@@ -37,7 +38,7 @@ namespace DigitalChat{
 		#region private
 		private void CheckConnection(){
 			if (isConnected == false)
-				throw Exception (TextList.ERROR_NO_CONNECTION);
+				throw new Exception (TextList.ERROR_NO_CONNECTION);
 		}
 		#endregion
 	}
