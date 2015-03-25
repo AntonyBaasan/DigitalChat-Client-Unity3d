@@ -17,14 +17,12 @@ namespace DigitalChat{
 		private string fromUser;
 		private string toUser;
 		private string content;
-		private MSG_TYPE type;
 		private DateTime time;
 
-		public Message(string fromUser,string toUser,string content, MSG_TYPE type,DateTime time){
+		public Message(string fromUser,string toUser,string content, DateTime time){
 			this.fromUser = fromUser;
 			this.toUser = toUser;
 			this.content = content;
-			this.type = type;
 			this.time = time;
 		}
 
@@ -34,15 +32,15 @@ namespace DigitalChat{
 		/// </summary>
 		/// <param name="jsonStr">Json string.</param>
 		public Message(JSONObject jsonObject){
-			this.fromUser = jsonObject["fromUser"].ToString();
-			this.toUser = jsonObject["toUser"].ToString();
-			this.content = jsonObject["content"].ToString();
-			//this.type = jsonObject["type"].ToString();
-			this.time = DateTime.Parse(jsonObject["time"].ToString());
+			this.fromUser = jsonObject["fromUser"] != null?jsonObject["fromUser"].ToString():"";
+			this.toUser = jsonObject["toUser"] != null? jsonObject["toUser"].ToString():"";
+			this.content = jsonObject["content"] != null? jsonObject["content"].ToString():"";
+			this.time = jsonObject["time"] != null?DateTime.Parse(jsonObject["time"].ToString()):DateTime.Now;
 		}
 
-		public string ToJson(){
-			return "blalblalbla";
+		public override string ToString(){
+
+			return "fromUser: "+fromUser+", toUser: "+toUser+", content: "+content+", time: "+time;
 		}
 	}
 }

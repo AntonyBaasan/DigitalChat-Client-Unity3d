@@ -54,7 +54,7 @@ namespace DigitalChat{
 			socket.On(TextList.EVENT_WELCOME, SocketListener);
 		}
 
-		private void SocketListener(SocketIOEvent e)
+		public void SocketListener(SocketIOEvent e)
 		{
 			Debug.Log("[SocketIO] received: " + e.name + " :: " + e.data);
 			switch (e.name) {
@@ -80,43 +80,30 @@ namespace DigitalChat{
 		}
 
 		#region IChatClient implementation
-		public IEnumerator Login (string userName){
-			// wait 1 seconds and continue
-			yield return new WaitForSeconds(0.5f);
-
+		public void Login (string userName){
 			//Emite
 			Dictionary<string, string> data = new Dictionary<string, string>();
 			data["fromUser"] = userName;
 			socket.Emit("login", new JSONObject(data));
-			// wait ONE FRAME and continue
 			Debug.Log ("Login request sent");
-			yield break;
 		}
 
-		public IEnumerator SendChat (string fromName, string toName, string message){
-			yield return new WaitForSeconds(0.5f);
-			
+		public void SendChat (string fromName, string toName, string message){
 			//Emite
 			Dictionary<string, string> data = new Dictionary<string, string>();
 			data["fromUser"] = fromName;
 			data["toUser"] = toName;
-			data["data"] = message;
+			data["content"] = message;
 			data["time"] = DateTime.Now.ToString();
 
 			socket.Emit(TextList.EVENT_TALK_TO_PEER, new JSONObject(data));
-			// wait ONE FRAME and continue
-			Debug.Log ("SendMessage to: "+toName+", message: "+message);
-			yield break;
 		}
 
-		public IEnumerator GetOnlineUserList (){
-			yield return new WaitForSeconds(0.5f);
-			
+		public void GetOnlineUserList (){
 			//Emite
 			socket.Emit(TextList.EVENT_GET_ONLINE_PEERS);
 			// wait ONE FRAME and continue
 			Debug.Log ("GetOnlineUserList called.");
-			yield break;
 		}
 		#endregion
 	}

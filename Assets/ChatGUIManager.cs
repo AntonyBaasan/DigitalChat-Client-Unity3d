@@ -6,26 +6,40 @@ using DigitalChat;
 public class ChatGUIManager : MonoBehaviour {
 	public ChatClient chatClient;
 	public InputField inputField;
-	public InputField NameInputField;
+	public InputField nameInputField;
+	public InputField toUserField;
 	public Text chatField;
 
 	// Use this for initialization
 	void Start () {
-		NameInputField.text = "Antony";
+		nameInputField.text = "Antony";
+
+		chatClient.ListenOnDisconnect = DebugText;
+		chatClient.ListenOnErr = DebugText;
+		chatClient.ListenOnGetOnlinePeers = DebugText;
+		chatClient.ListenOnTalkToPeer = DebugText;
+		chatClient.ListenOnUserConnected = DebugText;
+		chatClient.ListenOnWelcome = DebugText;
 	}
 
 	public void ButtonLogin(){
-		StartCoroutine(chatClient.Login(NameInputField.text));
+		chatClient.Login(nameInputField.text);
 	}
+
 	public void ButtonSend(){
-		chatField.text += "\n" + NameInputField.text + ": " + inputField.text;
+		chatField.text += "\n" + nameInputField.text + ": " + inputField.text;
+		chatClient.SendChat(nameInputField.text, toUserField.text, inputField.text);
+
 		inputField.text = "";
 		inputField.Select();
-
-		StartCoroutine(chatClient.SendChat(NameInputField.text, NameInputField.text, inputField.text));
 	}
+
 	public void GetOnlineUserList()
 	{
-		StartCoroutine(chatClient.GetOnlineUserList());
+		chatClient.GetOnlineUserList();
+	}
+
+	public void DebugText(Message msg){
+		chatField.text += "\n" +"Debug: " + msg.ToString();
 	}
 }
