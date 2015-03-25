@@ -7,7 +7,7 @@ namespace DigitalChat{
 		//Login to the server
 		IEnumerator Login (string userName);
 		//Send message to user
-		IEnumerator SendMessage (string fromName, string toName, string message);
+		IEnumerator SendChat (string fromName, string toName, string message);
 		//Trigger method for getting all online user list
 		IEnumerator GetOnlineUserList ();
 	}

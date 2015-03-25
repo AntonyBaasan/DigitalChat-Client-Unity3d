@@ -15,11 +15,17 @@ public class ChatGUIManager : MonoBehaviour {
 	}
 
 	public void ButtonLogin(){
-		chatClient.Login(NameInputField.text);
+		StartCoroutine(chatClient.Login(NameInputField.text));
 	}
 	public void ButtonSend(){
 		chatField.text += "\n" + NameInputField.text + ": " + inputField.text;
 		inputField.text = "";
 		inputField.Select();
+
+		StartCoroutine(chatClient.SendChat(NameInputField.text, NameInputField.text, inputField.text));
+	}
+	public void GetOnlineUserList()
+	{
+		StartCoroutine(chatClient.GetOnlineUserList());
 	}
 }

@@ -93,7 +93,7 @@ namespace DigitalChat{
 			yield break;
 		}
 
-		public IEnumerator SendMessage (string fromName, string toName, string message){
+		public IEnumerator SendChat (string fromName, string toName, string message){
 			yield return new WaitForSeconds(0.5f);
 			
 			//Emite
