@@ -33,6 +33,7 @@ using SocketIO;
 public class TestSocketIO : MonoBehaviour
 {
 	private SocketIOComponent socket;
+	private string testStr;
 
 	public void Start() 
 	{
@@ -74,11 +75,14 @@ public class TestSocketIO : MonoBehaviour
 	public void TestOpen(SocketIOEvent e)
 	{
 		Debug.Log("[SocketIO] Open received: " + e.name + " " + e.data);
+		testStr += "[SocketIO] Open received: " + e.name + " " + e.data+"\n";
+
 	}
 	
 	public void TestBoop(SocketIOEvent e)
 	{
 		Debug.Log("[SocketIO] Boop received: " + e.name + " " + e.data);
+		testStr += e.name+" : received"+"\n";
 
 		if (e.data == null) { return; }
 
@@ -87,15 +91,23 @@ public class TestSocketIO : MonoBehaviour
 			"THIS: " + e.data.GetField("this").str +
 			"#####################################################"
 		);
+
+
 	}
 	
 	public void TestError(SocketIOEvent e)
 	{
 		Debug.Log("[SocketIO] Error received: " + e.name + " " + e.data);
+		testStr += "[SocketIO] Error received: " + e.name + " " + e.data+"\n";
 	}
 	
 	public void TestClose(SocketIOEvent e)
 	{	
 		Debug.Log("[SocketIO] Close received: " + e.name + " " + e.data);
+	}
+
+	public void OnGUI(){
+		GUI.Label(new Rect(100,0,500,600), testStr);
+
 	}
 }

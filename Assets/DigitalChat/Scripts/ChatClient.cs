@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using SocketIO;
+using UnityEngine.UI;
 
 namespace DigitalChat{
 	[RequireComponent (typeof (SocketIOComponent))]
@@ -10,6 +11,7 @@ namespace DigitalChat{
 
 		private SocketIOComponent socket;
 		public delegate void DelMessage(Message msg);
+		public Text debugField;
 
 		//Methods emitted from server
 		/// <summary>
@@ -43,7 +45,7 @@ namespace DigitalChat{
 		/// </summary>
 		public DelMessage ListenOnWelcome;
 
-		void Awake(){
+		void Start(){
 			socket = this.GetComponent<SocketIOComponent> ();
 
 			socket.On(TextList.EVENT_ERROR, SocketListener);
@@ -57,6 +59,8 @@ namespace DigitalChat{
 		public void SocketListener(SocketIOEvent e)
 		{
 			Debug.Log("[SocketIO] received: " + e.name + " :: " + e.data);
+			debugField.text += "\n"+"[SocketIO] received: " + e.name + " :: " + e.data;
+
 			switch (e.name) {
 				case TextList.EVENT_ERROR:
 					ListenOnErr(new Message(e.data));
