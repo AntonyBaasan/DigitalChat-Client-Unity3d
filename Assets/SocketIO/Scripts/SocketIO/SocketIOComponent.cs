@@ -91,6 +91,8 @@ namespace SocketIO
 
 		public void Awake()
 		{
+			Debug.Log ("SocketIOComponent - Awake");
+
 			encoder = new Encoder();
 			decoder = new Decoder();
 			parser = new Parser();

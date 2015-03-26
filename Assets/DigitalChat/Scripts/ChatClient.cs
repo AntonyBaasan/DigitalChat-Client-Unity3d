@@ -45,7 +45,7 @@ namespace DigitalChat{
 		/// </summary>
 		public DelMessage ListenOnWelcome;
 
-		void Start(){
+		void Awake(){
 			socket = this.GetComponent<SocketIOComponent> ();
 
 			socket.On(TextList.EVENT_ERROR, SocketListener);

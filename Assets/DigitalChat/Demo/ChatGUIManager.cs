@@ -12,6 +12,7 @@ public class ChatGUIManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
 		nameInputField.text = "Antony";
 
 		chatClient.ListenOnDisconnect = DebugText;
