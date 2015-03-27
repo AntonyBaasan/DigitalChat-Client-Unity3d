@@ -8,7 +8,7 @@ namespace DigitalChat{
 		void Login (string userName);
 		//Send message to user
 		void SendChat (string fromName, string toName, string message);
-		//Trigger method for getting all online user list
+		//Ask for getting all online user list
 		void GetOnlineUserList ();
 	}
 

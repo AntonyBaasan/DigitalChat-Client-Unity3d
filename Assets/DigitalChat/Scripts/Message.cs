@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DigitalChat{
 
+	//Chat server message types. Dupricated.
 	public enum MSG_TYPE{
 		LOGIN,
 		DISCONNECT,
@@ -13,11 +15,18 @@ namespace DigitalChat{
 		USER_DISCONNECTED,
 	}
 
+	/// <summary>
+	/// Message that we send and receive to chat server.
+	/// </summary>
 	public class Message {
-		private string fromUser;
-		private string toUser;
-		private string content;
-		private DateTime time;
+		public string fromUser;
+		public string toUser;
+		public string content;
+		public DateTime time;
+
+		public Message()
+		{
+		}
 
 		public Message(string fromUser,string toUser,string content, DateTime time){
 			this.fromUser = fromUser;
@@ -32,10 +41,27 @@ namespace DigitalChat{
 		/// </summary>
 		/// <param name="jsonStr">Json string.</param>
 		public Message(JSONObject jsonObject){
-			this.fromUser = jsonObject["fromUser"] != null?jsonObject["fromUser"].ToString():"";
-			this.toUser = jsonObject["toUser"] != null? jsonObject["toUser"].ToString():"";
-			this.content = jsonObject["content"] != null? jsonObject["content"].ToString():"";
-			this.time = jsonObject["time"] != null?DateTime.Parse(jsonObject["time"].ToString()):DateTime.Now;
+			this.fromUser = jsonObject[StringHelper.FIELD_FROM_USER] != null?jsonObject[StringHelper.FIELD_FROM_USER].ToString():null;
+			this.toUser = jsonObject[StringHelper.FIELD_TO_USER] != null? jsonObject[StringHelper.FIELD_TO_USER].ToString():null;
+			this.content = jsonObject[StringHelper.FIELD_CONTENT] != null? jsonObject[StringHelper.FIELD_CONTENT].ToString():null;
+			this.time = jsonObject[StringHelper.FIELD_TIME] != null?DateTime.Parse(jsonObject[StringHelper.FIELD_TIME].ToString()):DateTime.Now;
+		}
+		/// <summary>
+		/// Tos the JSONObject.
+		/// </summary>
+		/// <returns>The json.</returns>
+		public JSONObject ToJson(){
+			Dictionary<string, string> data = new Dictionary<string, string>();
+			if(this.fromUser != null)
+				data[StringHelper.FIELD_FROM_USER] = this.fromUser;
+			if(this.toUser != null)
+				data[StringHelper.FIELD_TO_USER] = this.toUser;
+			if(this.content != null)
+				data[StringHelper.FIELD_CONTENT] = this.content;
+
+			data[StringHelper.FIELD_TIME] = DateTime.Now.ToString();
+
+			return new JSONObject (data);
 		}
 
 		public override string ToString(){

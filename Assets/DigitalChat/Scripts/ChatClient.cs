@@ -9,9 +9,8 @@ namespace DigitalChat{
 	[RequireComponent (typeof (SocketIOComponent))]
 	public class ChatClient : MonoBehaviour,IChatClient {
 
-		private SocketIOComponent socket;
-		public delegate void DelMessage(Message msg);
-		public Text debugField;
+		private SocketIOComponent socket; //Component to connect SocketIO
+		public delegate void DelMessage(Message msg);//Delegate for assigning message listeners
 
 		//Methods emitted from server
 		/// <summary>
@@ -48,64 +47,76 @@ namespace DigitalChat{
 		void Awake(){
 			socket = this.GetComponent<SocketIOComponent> ();
 
-			socket.On(TextList.EVENT_ERROR, SocketListener);
-			socket.On(TextList.EVENT_DISCONNECT, SocketListener);
-			socket.On(TextList.EVENT_GET_ONLINE_PEERS, SocketListener);
-			socket.On(TextList.EVENT_TALK_TO_PEER, SocketListener);
-			socket.On(TextList.EVENT_USER_CONNECT, SocketListener);
-			socket.On(TextList.EVENT_WELCOME, SocketListener);
+			//Listen all requests from server on SocketListener (traffice controller) method
+			socket.On(StringHelper.EVENT_ERROR, SocketListener);
+			socket.On(StringHelper.EVENT_DISCONNECT, SocketListener);
+			socket.On(StringHelper.EVENT_GET_ONLINE_PEERS, SocketListener);
+			socket.On(StringHelper.EVENT_TALK_TO_PEER, SocketListener);
+			socket.On(StringHelper.EVENT_USER_CONNECT, SocketListener);
+			socket.On(StringHelper.EVENT_WELCOME, SocketListener);
 		}
 
+		/// <summary>
+		/// Takes raw request from server and transforms to DigitalChat.Message class.
+		/// Then call appropriate delegated methods.
+		/// </summary>
+		/// <param name="e">E.</param>
 		public void SocketListener(SocketIOEvent e)
 		{
 			Debug.Log("[SocketIO] received: " + e.name + " :: " + e.data);
-			debugField.text += "\n"+"[SocketIO] received: " + e.name + " :: " + e.data;
 
 			switch (e.name) {
-				case TextList.EVENT_ERROR:
+				case StringHelper.EVENT_ERROR:
 					ListenOnErr(new Message(e.data));
 					break;
-				case TextList.EVENT_DISCONNECT:
+				case StringHelper.EVENT_DISCONNECT:
 					ListenOnDisconnect(new Message(e.data));
 					break;
-				case TextList.EVENT_GET_ONLINE_PEERS:
+				case StringHelper.EVENT_GET_ONLINE_PEERS:
 					ListenOnGetOnlinePeers(new Message(e.data));
 					break;
-				case TextList.EVENT_TALK_TO_PEER:
+				case StringHelper.EVENT_TALK_TO_PEER:
 					ListenOnTalkToPeer(new Message(e.data));
 					break;
-				case TextList.EVENT_USER_CONNECT:
+				case StringHelper.EVENT_USER_CONNECT:
 					ListenOnUserConnected(new Message(e.data));
 					break;
-				case TextList.EVENT_WELCOME:
+				case StringHelper.EVENT_WELCOME:
 					ListenOnWelcome(new Message(e.data));
 					break;
 			}
 		}
 
 		#region IChatClient implementation
+		/// <summary>
+		/// Login to the Chat.
+		/// </summary>
+		/// <param name="userName">User name.</param>
 		public void Login (string userName){
+			Message msg = new Message ();
+			msg.fromUser = userName;
 			//Emite
-			Dictionary<string, string> data = new Dictionary<string, string>();
-			data["fromUser"] = userName;
-			socket.Emit("login", new JSONObject(data));
+			socket.Emit("login", msg.ToJson());
 			Debug.Log ("Login request sent");
 		}
-
+		/// <summary>
+		/// Sends the chat.
+		/// </summary>
+		/// <param name="fromName">From user name.</param>
+		/// <param name="toName">To user name.</param>
+		/// <param name="message">Chat conversation content.</param>
 		public void SendChat (string fromName, string toName, string message){
+			//Create 
+			Message msg = new Message (fromName,toName,message,DateTime.Now);
 			//Emite
-			Dictionary<string, string> data = new Dictionary<string, string>();
-			data["fromUser"] = fromName;
-			data["toUser"] = toName;
-			data["content"] = message;
-			data["time"] = DateTime.Now.ToString();
-
-			socket.Emit(TextList.EVENT_TALK_TO_PEER, new JSONObject(data));
+			socket.Emit(StringHelper.EVENT_TALK_TO_PEER, msg.ToJson());
 		}
-
+		/// <summary>
+		/// Gets the online user list. This will just send the request, result will be on "ListenOnGetOnlinePeers" delegate
+		/// </summary>
 		public void GetOnlineUserList (){
 			//Emite
-			socket.Emit(TextList.EVENT_GET_ONLINE_PEERS);
+			socket.Emit(StringHelper.EVENT_GET_ONLINE_PEERS);
 			// wait ONE FRAME and continue
 			Debug.Log ("GetOnlineUserList called.");
 		}

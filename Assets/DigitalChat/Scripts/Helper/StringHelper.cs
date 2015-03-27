@@ -2,7 +2,10 @@
 using System.Collections;
 
 namespace DigitalChat{
-	public class TextList {
+	/// <summary>
+	/// Helper class. Holds all strings as CONST values.
+	/// </summary>
+	public class StringHelper {
 		public const string ERROR_NO_CONNECTION = "Chat is disconneted. Need to Connect first.";
 
 		//An error happened on server
@@ -17,5 +20,12 @@ namespace DigitalChat{
 		public const string EVENT_USER_CONNECT = "userConnected";
 		//Successful login
 		public const string EVENT_WELCOME = "welcome";
+
+
+		public const string FIELD_FROM_USER = "fromUser";
+		public const string FIELD_TO_USER = "toUser";
+		public const string FIELD_CONTENT = "content";
+		public const string FIELD_TIME = "time";
+
 	}
 }
