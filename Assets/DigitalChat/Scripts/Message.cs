@@ -22,6 +22,7 @@ namespace DigitalChat{
 		public string fromUser;
 		public string toUser;
 		public string content;
+		public JSONObject contentAsJson;
 		public DateTime time;
 
 		public Message()
@@ -41,10 +42,11 @@ namespace DigitalChat{
 		/// </summary>
 		/// <param name="jsonStr">Json string.</param>
 		public Message(JSONObject jsonObject){
-			this.fromUser = jsonObject[StringHelper.FIELD_FROM_USER] != null?jsonObject[StringHelper.FIELD_FROM_USER].ToString():null;
-			this.toUser = jsonObject[StringHelper.FIELD_TO_USER] != null? jsonObject[StringHelper.FIELD_TO_USER].ToString():null;
-			this.content = jsonObject[StringHelper.FIELD_CONTENT] != null? jsonObject[StringHelper.FIELD_CONTENT].ToString():null;
-			this.time = jsonObject[StringHelper.FIELD_TIME] != null?DateTime.Parse(jsonObject[StringHelper.FIELD_TIME].ToString()):DateTime.Now;
+			this.fromUser = jsonObject[StringHelper.FIELD_FROM_USER] != null?jsonObject[StringHelper.FIELD_FROM_USER].ToString().Trim('"'):null;
+			this.toUser = jsonObject[StringHelper.FIELD_TO_USER] != null? jsonObject[StringHelper.FIELD_TO_USER].ToString().Trim('"'):null;
+			this.content = jsonObject[StringHelper.FIELD_CONTENT] != null? jsonObject[StringHelper.FIELD_CONTENT].ToString().Trim('"'):null;
+			this.contentAsJson = jsonObject[StringHelper.FIELD_CONTENT] != null? jsonObject[StringHelper.FIELD_CONTENT]:null;
+			this.time = jsonObject[StringHelper.FIELD_TIME] != null?DateTime.Parse(jsonObject[StringHelper.FIELD_TIME].ToString().Trim('"')):DateTime.Now;
 		}
 		/// <summary>
 		/// Tos the JSONObject.
