@@ -29,7 +29,7 @@ public class ChatGUIManager : MonoBehaviour {
 
 	public void ButtonSend(){
 		chatField.text += "\n" + nameInputField.text + ": " + inputField.text;
-		chatClient.SendChat(nameInputField.text, toUserField.text, inputField.text);
+		chatClient.SendChat(nameInputField.text, toUserField.text, inputField.text, "CHAT");
 
 		inputField.text = "";
 		inputField.Select();

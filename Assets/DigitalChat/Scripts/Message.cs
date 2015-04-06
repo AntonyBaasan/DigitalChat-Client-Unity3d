@@ -4,16 +4,16 @@ using System.Collections.Generic;
 namespace DigitalChat{
 
 	//Chat server message types. Dupricated.
-	public enum MSG_TYPE{
-		LOGIN,
-		DISCONNECT,
-		SEND_TO_PEER,
-		BROADCAST,
-		GET_ONLINE_PEERS,
-		ERROR,
-		USER_CONNECTED,
-		USER_DISCONNECTED,
-	}
+//	public enum MSG_TYPE{
+//		LOGIN,
+//		DISCONNECT,
+//		SEND_TO_PEER,
+//		BROADCAST,
+//		GET_ONLINE_PEERS,
+//		ERROR,
+//		USER_CONNECTED,
+//		USER_DISCONNECTED,
+//	}
 
 	/// <summary>
 	/// Message that we send and receive to chat server.
@@ -22,6 +22,7 @@ namespace DigitalChat{
 		public string fromUser;
 		public string toUser;
 		public string content;
+		public string msgType;
 		public JSONObject contentAsJson;
 		public DateTime time;
 
@@ -29,10 +30,11 @@ namespace DigitalChat{
 		{
 		}
 
-		public Message(string fromUser,string toUser,string content, DateTime time){
+		public Message(string fromUser, string toUser, string content, string msgType, DateTime time){
 			this.fromUser = fromUser;
 			this.toUser = toUser;
 			this.content = content;
+			this.msgType = msgType;
 			this.time = time;
 		}
 
@@ -46,6 +48,7 @@ namespace DigitalChat{
 			this.toUser = jsonObject[StringHelper.FIELD_TO_USER] != null? jsonObject[StringHelper.FIELD_TO_USER].ToString().Trim('"'):null;
 			this.content = jsonObject[StringHelper.FIELD_CONTENT] != null? jsonObject[StringHelper.FIELD_CONTENT].ToString().Trim('"'):null;
 			this.contentAsJson = jsonObject[StringHelper.FIELD_CONTENT] != null? jsonObject[StringHelper.FIELD_CONTENT]:null;
+			this.msgType = jsonObject[StringHelper.FIELD_MSGTYPE] != null? jsonObject[StringHelper.FIELD_MSGTYPE].ToString().Trim('"'):null;
 			this.time = jsonObject[StringHelper.FIELD_TIME] != null?DateTime.Parse(jsonObject[StringHelper.FIELD_TIME].ToString().Trim('"')):DateTime.Now;
 		}
 		/// <summary>
@@ -60,6 +63,8 @@ namespace DigitalChat{
 				data[StringHelper.FIELD_TO_USER] = this.toUser;
 			if(this.content != null)
 				data[StringHelper.FIELD_CONTENT] = this.content;
+			if(this.msgType != null)
+				data[StringHelper.FIELD_MSGTYPE] = this.msgType;
 
 			data[StringHelper.FIELD_TIME] = DateTime.Now.ToString();
 
@@ -68,7 +73,7 @@ namespace DigitalChat{
 
 		public override string ToString(){
 
-			return "fromUser: "+fromUser+", toUser: "+toUser+", content: "+content+", time: "+time;
+			return "fromUser: "+fromUser+", toUser: "+toUser+", content: "+content+", time: "+time+", msgType: "+msgType;
 		}
 	}
 }

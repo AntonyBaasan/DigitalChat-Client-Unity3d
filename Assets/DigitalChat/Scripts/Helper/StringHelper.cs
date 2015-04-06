@@ -25,6 +25,7 @@ namespace DigitalChat{
 		public const string FIELD_FROM_USER = "fromUser";
 		public const string FIELD_TO_USER = "toUser";
 		public const string FIELD_CONTENT = "content";
+		public const string FIELD_MSGTYPE = "msgType";
 		public const string FIELD_TIME = "time";
 
 	}

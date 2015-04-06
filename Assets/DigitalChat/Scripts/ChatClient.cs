@@ -105,9 +105,9 @@ namespace DigitalChat{
 		/// <param name="fromName">From user name.</param>
 		/// <param name="toName">To user name.</param>
 		/// <param name="message">Chat conversation content.</param>
-		public void SendChat (string fromName, string toName, string message){
+		public void SendChat (string fromName, string toName, string message, string msgType){
 			//Create 
-			Message msg = new Message (fromName,toName,message,DateTime.Now);
+			Message msg = new Message (fromName,toName,message, msgType, DateTime.Now);
 			//Emite
 			socket.Emit(StringHelper.EVENT_TALK_TO_PEER, msg.ToJson());
 		}
