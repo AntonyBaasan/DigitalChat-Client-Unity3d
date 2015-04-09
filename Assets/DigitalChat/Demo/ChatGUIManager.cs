@@ -21,10 +21,15 @@ public class ChatGUIManager : MonoBehaviour {
 		chatClient.ListenOnTalkToPeer = DebugText;
 		chatClient.ListenOnUserConnected = DebugText;
 		chatClient.ListenOnWelcome = DebugText;
+		chatClient.ListenOnLogout = DebugText;
 	}
 
 	public void ButtonLogin(){
 		chatClient.Login(nameInputField.text);
+	}
+
+	public void ButtonLogout(){
+		chatClient.Logout();
 	}
 
 	public void ButtonSend(){

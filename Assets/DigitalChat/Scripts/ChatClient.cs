@@ -43,17 +43,23 @@ namespace DigitalChat{
 		/// Message - {content:""}
 		/// </summary>
 		public DelMessage ListenOnWelcome;
+		/// <summary>
+		/// Someone logged out
+		/// Message - {content:""}
+		/// </summary>
+		public DelMessage ListenOnLogout;
 
 		void Awake(){
 			socket = this.GetComponent<SocketIOComponent> ();
 
 			//Listen all requests from server on SocketListener (traffice controller) method
 			socket.On(StringHelper.EVENT_ERROR, SocketListener);
-			socket.On(StringHelper.EVENT_DISCONNECT, SocketListener);
+			socket.On(StringHelper.EVENT_USERDISCONNECT, SocketListener);
 			socket.On(StringHelper.EVENT_GET_ONLINE_PEERS, SocketListener);
 			socket.On(StringHelper.EVENT_TALK_TO_PEER, SocketListener);
 			socket.On(StringHelper.EVENT_USER_CONNECT, SocketListener);
 			socket.On(StringHelper.EVENT_WELCOME, SocketListener);
+			socket.On(StringHelper.EVENT_USERLOGOUT, SocketListener);
 		}
 
 		/// <summary>
@@ -69,7 +75,7 @@ namespace DigitalChat{
 				case StringHelper.EVENT_ERROR:
 					ListenOnErr(new Message(e.data));
 					break;
-				case StringHelper.EVENT_DISCONNECT:
+				case StringHelper.EVENT_USERDISCONNECT:
 					ListenOnDisconnect(new Message(e.data));
 					break;
 				case StringHelper.EVENT_GET_ONLINE_PEERS:
@@ -83,6 +89,9 @@ namespace DigitalChat{
 					break;
 				case StringHelper.EVENT_WELCOME:
 					ListenOnWelcome(new Message(e.data));
+					break;
+				case StringHelper.EVENT_USERLOGOUT:
+					ListenOnLogout(new Message(e.data));
 					break;
 			}
 		}
@@ -98,6 +107,15 @@ namespace DigitalChat{
 			//Emite
 			socket.Emit("login", msg.ToJson());
 			Debug.Log ("Login request sent");
+		}
+		/// <summary>
+		/// Logout from the Chat (but not disconnected).
+		/// </summary>
+		/// <param name="userName">User name.</param>
+		public void Logout (){
+			//Emite
+			socket.Emit("logout");
+			Debug.Log ("Logout request sent");
 		}
 		/// <summary>
 		/// Sends the chat.

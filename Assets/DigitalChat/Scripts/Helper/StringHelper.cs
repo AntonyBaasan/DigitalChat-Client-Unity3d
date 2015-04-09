@@ -11,7 +11,7 @@ namespace DigitalChat{
 		//An error happened on server
 		public const string EVENT_ERROR = "err";
 		//Other user was disconnected
-		public const string EVENT_DISCONNECT = "userDisconnected";
+		public const string EVENT_USERDISCONNECT = "userDisconnected";
 		//Get all online user list
 		public const string EVENT_GET_ONLINE_PEERS = "getOnlinePeers";
 		//Chat with certain user
@@ -20,6 +20,8 @@ namespace DigitalChat{
 		public const string EVENT_USER_CONNECT = "userConnected";
 		//Successful login
 		public const string EVENT_WELCOME = "welcome";
+		//Someone logged out
+		public const string EVENT_USERLOGOUT = "userLogout";
 
 
 		public const string FIELD_FROM_USER = "fromUser";
