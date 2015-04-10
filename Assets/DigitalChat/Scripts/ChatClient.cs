@@ -20,6 +20,7 @@ namespace DigitalChat{
 		public DelMessage ListenOnErr;
 		/// <summary>
 		/// Other user was disconnected
+		/// or Logged out
 		/// Message - {fromUser:""}
 		/// </summary>
 		public DelMessage ListenOnDisconnect;
@@ -43,11 +44,6 @@ namespace DigitalChat{
 		/// Message - {content:""}
 		/// </summary>
 		public DelMessage ListenOnWelcome;
-		/// <summary>
-		/// Someone logged out
-		/// Message - {content:""}
-		/// </summary>
-		public DelMessage ListenOnLogout;
 
 		void Awake(){
 			socket = this.GetComponent<SocketIOComponent> ();
@@ -59,7 +55,6 @@ namespace DigitalChat{
 			socket.On(StringHelper.EVENT_TALK_TO_PEER, SocketListener);
 			socket.On(StringHelper.EVENT_USER_CONNECT, SocketListener);
 			socket.On(StringHelper.EVENT_WELCOME, SocketListener);
-			socket.On(StringHelper.EVENT_USERLOGOUT, SocketListener);
 		}
 
 		/// <summary>
@@ -90,9 +85,6 @@ namespace DigitalChat{
 				case StringHelper.EVENT_WELCOME:
 					ListenOnWelcome(new Message(e.data));
 					break;
-				case StringHelper.EVENT_USERLOGOUT:
-					ListenOnLogout(new Message(e.data));
-					break;
 			}
 		}
 
@@ -110,6 +102,7 @@ namespace DigitalChat{
 		}
 		/// <summary>
 		/// Logout from the Chat (but not disconnected).
+		/// Will trigger callback "userDisconnect" (same as socket disconnection)
 		/// </summary>
 		/// <param name="userName">User name.</param>
 		public void Logout (){

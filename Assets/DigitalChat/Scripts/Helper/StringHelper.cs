@@ -20,8 +20,6 @@ namespace DigitalChat{
 		public const string EVENT_USER_CONNECT = "userConnected";
 		//Successful login
 		public const string EVENT_WELCOME = "welcome";
-		//Someone logged out
-		public const string EVENT_USERLOGOUT = "userLogout";
 
 
 		public const string FIELD_FROM_USER = "fromUser";
